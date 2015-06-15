@@ -3,6 +3,8 @@ package ca.kb1.csCWStools;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.kb1.csCWStools.Main.SOAPServices;
+
 import com.opentext.livelink.service.docman.DocumentManagement;
 import com.opentext.livelink.service.docman.Node;
 import com.opentext.livelink.service.docman.NodePermissions;
@@ -39,10 +41,10 @@ public class AddNodeRightACL {
 		
 	}
 	
-	public static String addNodeRightACL(Node thisNode, DocumentManagement docManClient) {
+	public static String addNodeRightACL(Node thisNode, SOAPServices soapServices) {
 		
 		// reach out to the server and get the NodeRights associated with this Node
-		NodeRights thisNodeRights = docManClient.getNodeRights(thisNode.getID());
+		NodeRights thisNodeRights = soapServices.docManClient().getNodeRights(thisNode.getID());
 		
 		// extract the set of Assigned Access ACLs associated with this Node
 		// note: a Content Server node also has a mandatory set of Owner permissions, an 
@@ -72,7 +74,7 @@ public class AddNodeRightACL {
 			for (RightID thisTargetRightID : targetRightIDs) {
 				if (thisTargetRightID.getRightID() == thisNodeACLRight.getRightID()) {
 					thisNodeACLRight.setPermissions(newNodePermissions);
-					docManClient.updateNodeRight(thisNode.getID(), thisNodeACLRight);
+					soapServices.docManClient().updateNodeRight(thisNode.getID(), thisNodeACLRight);
 					thisTargetRightID.isUpdated(true); 
 				}
 			}
@@ -87,7 +89,7 @@ public class AddNodeRightACL {
 		for (RightID thisTargetRightID : targetRightIDs) {
 			if (!thisTargetRightID.isUpdated()) {
 				newNodeACLRight.setRightID(thisTargetRightID.getRightID());
-				docManClient.addNodeRight(thisNode.getID(), newNodeACLRight);
+				soapServices.docManClient().addNodeRight(thisNode.getID(), newNodeACLRight);
 			}
 		}
 		
