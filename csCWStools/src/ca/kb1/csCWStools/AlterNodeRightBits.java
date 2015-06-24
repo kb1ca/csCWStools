@@ -2,16 +2,17 @@ package ca.kb1.csCWStools;
 
 import java.util.List;
 
-import ca.kb1.csCWStools.Main.SOAPServices;
-
-import com.opentext.livelink.service.docman.DocumentManagement;
 import com.opentext.livelink.service.docman.Node;
 import com.opentext.livelink.service.docman.NodeRight;
 import com.opentext.livelink.service.docman.NodeRights;
 
 public class AlterNodeRightBits {
 
-	public static String alterNodeRightBits(Node thisNode, SOAPServices soapServices) {
+	public static String alterNodeRightBits(Node thisNode) {
+		
+		// get a reference to the CWS services we need
+		SOAPServices soapServices = SOAPServices.getInstance();
+		assert soapServices.docManClient() != null;
 		
 		// reach out to the server and get the NodeRights associated with this Node
 		NodeRights thisNodeRights = soapServices.docManClient().getNodeRights(thisNode.getID());

@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import javax.xml.ws.soap.SOAPFaultException;
 
-import ca.kb1.csCWStools.Main.SOAPServices;
-
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
@@ -16,14 +14,18 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.makernotes.PanasonicMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.PanasonicMakernoteDirectory;
-import com.opentext.livelink.service.docman.DocumentManagement;
 import com.opentext.livelink.service.docman.Node;
 import com.sun.xml.ws.developer.StreamingDataHandler;
 
 public class FindImagesByEXIF {
 
-	public static String findImagesByEXIF(Node thisNode, SOAPServices soapServices) throws SOAPFaultException {
+	public static String findImagesByEXIF(Node thisNode) throws SOAPFaultException {
 		// see https://drewnoakes.com/code/exif/
+		
+		// get a reference to the CWS services we need
+		SOAPServices soapServices = SOAPServices.getInstance();
+		assert soapServices.docManClient() != null;
+		assert soapServices.contentService() != null;
 		
 		StreamingDataHandler downloadStream = null;
 		

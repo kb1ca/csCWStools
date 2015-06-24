@@ -18,20 +18,21 @@ import java.util.List;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import javax.xml.ws.soap.SOAPFaultException;
 
-import ca.kb1.csCWStools.Main.SOAPServices;
-
 import com.opentext.livelink.service.core.DataValue;
 import com.opentext.livelink.service.core.StringValue;
 import com.opentext.livelink.service.docman.AttributeGroup;
-import com.opentext.livelink.service.docman.DocumentManagement;
 import com.opentext.livelink.service.docman.Metadata;
 import com.opentext.livelink.service.docman.Node;
-import com.opentext.livelink.service.docman.Version;
 import com.sun.xml.ws.developer.StreamingDataHandler;
 
 public class CalculateFingerprintForDocumentVersion {
 
-	public static void calculateFingerprintForDocumentVersion(Node thisNode, SOAPServices soapServices) {
+	public static void calculateFingerprintForDocumentVersion(Node thisNode) {
+		
+		// get a reference to the CWS services we need
+		SOAPServices soapServices = SOAPServices.getInstance();
+		assert soapServices.docManClient() != null;
+		assert soapServices.contentService() != null;
 		
 		String targetPath = null;
 		

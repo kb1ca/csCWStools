@@ -1,14 +1,15 @@
 package ca.kb1.csCWStools;
 
-import ca.kb1.csCWStools.Main.SOAPServices;
-
-import com.opentext.livelink.service.docman.DocumentManagement;
 import com.opentext.livelink.service.docman.Node;
 import com.opentext.livelink.service.docman.NodeVersionInfo;
 
 public class AlterRetainedVersions {
 
-	public void alterRetainedVersions(Node thisNode, SOAPServices soapServices) {
+	public void alterRetainedVersions(Node thisNode) {
+		
+		// get a reference to the CWS services we need
+		SOAPServices soapServices = SOAPServices.getInstance();
+		assert soapServices.docManClient() != null;
 		
 		// First, we need to pull a more complete Node object to work with NodeVersionInfo - thisNode is the low calorie version
 		Node thisNodeWithMetadata = soapServices.docManClient().getNode(thisNode.getID());
