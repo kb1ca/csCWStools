@@ -11,8 +11,9 @@ import java.util.concurrent.TimeUnit;
 import ca.kb1.csCWStools.WorkQueue;
 
 public class Main {
-
-	// 
+	
+	// Example of setting up and running NodeProducerConsumer to traverse an Opentext Content Server 10.5 system 
+	// and perform specific actions against particular content, without foreknowedge of the nodes of interest
 	
 	public static void main(String[] args) throws MalformedURLException {
 		
@@ -21,7 +22,7 @@ public class Main {
 		SOAPServers.add("http://cs-test-admin/cws/");
 //		SOAPServers.add("http://cs-test-web1:81/cws/");
 //		SOAPServers.add("http://cs-test-web2:81/cws/");
-//		...and any additional servers...
+		// ...and any additional servers...
 		
 		// authorize the connection to CWS
 		SOAPServices soapServices = SOAPServices.getInstance();
@@ -43,8 +44,9 @@ public class Main {
 		
 		// Start to recurse the tree from a specific starting node, producing more tasks as we go...
 		Runnable task = new NodeProducerConsumer(workQueue, 
-													soapServices.docManClient().getNode(startingNode), 
-													soapServices.docManClient().getNode(startingNode).isIsContainer());
+			soapServices.docManClient().getNode(startingNode), 
+			soapServices.docManClient().getNode(startingNode).isIsContainer());
+		
 		workQueue.execute(task);
 		
 		// allow processing to come up to full speed
@@ -119,7 +121,8 @@ public class Main {
 								+ " seconds)"
 								);
 		
-/*		// capture a record of the actions
+/*		
+		// capture a record of the actions
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter ("c:/twiddler-log.txt", "UTF-8");
